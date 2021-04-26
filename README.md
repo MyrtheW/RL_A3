@@ -16,8 +16,8 @@ The project was done in the context of the Reinforcement Learning course at Leid
 
 ## Dependencies
 
-The algorithm depends on the RNAfold programme of the ViennaRNA. The executables can be installed via the following binaries:
-The link to the directory of the RNAfold.exe should be provided as input to the algorithm. 
+The algorithm depends on the RNAfold programme of the ViennaRNA. The executables can be installed via the binaries available [online](https://www.tbi.univie.ac.at/RNA/#binary_packages). 
+The link to the directory of the RNAfold.exe should be provided as input to the algorithm.
 
 Next to the standard library, the following packages are used in the main code:
 

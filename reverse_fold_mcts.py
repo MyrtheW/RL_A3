@@ -246,7 +246,7 @@ class MonteCarloTreeSearch:
 
 if __name__ == "__main__":
     warnings.filterwarnings("ignore")
+    RNAfold_directory_myrthe = "C:\Program Files (x86)\ViennaRNA Package\RNAfold.exe"
     mcts_object = MonteCarloTreeSearch()
     output = mcts_object.run()
     print(output)
-    None
