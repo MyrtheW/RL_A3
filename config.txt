@@ -1,0 +1,7 @@
+# Provide the target structure, RNAfold_directory, and other possible parameters.
+target_structure : string = (((((...(((.....)))...)).)))
+RNAfold_directory : string = C:\Program Files (x86)\ViennaRNA Package\RNAfold.exe
+RNA : bool = False # If False, a DNA sequence is computed
+max_evaluations : int = 200
+max_local_search_evaluations : int = 5
+c_parameter : int = 1000
