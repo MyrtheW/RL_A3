@@ -20,27 +20,7 @@ def cp_experiments(structures, length, cp_parameters=[10**i for i in range(-3,4)
                 similarities = np.append(similarities, similarity)
         mean_similarities = np.append(mean_similarities, np.mean(similarities))
         std_similarities = np.append(std_similarities, np.std(similarities))
-<<<<<<< Updated upstream
-
-    if plot:
-        #improve plot: plot from 0.5 (random) to 1 and logarthmic scale on x acix.
-        color = 'black'
-        plt.plot(cp_parameters, mean_similarities, color = color)
-        y_minus_error = mean_similarities - std_similarities
-        y_plus_error = mean_similarities + std_similarities
-        plt.fill_between(cp_parameters, y_minus_error, y_plus_error, color = color, alpha = 0.2)
-        plt.xscale('log')
-        plt.ylim(0.5, 1)
-        plt.xlabel(r"$C_p$")
-        plt.ylabel("Average similarity")
-        plt.title(f"Sequence length: {len(structure)}, max MCTS evaluations: {evaluations}")
-        plt.savefig(f"cp_plot_{evaluations}.pdf")
-        plt.show()
-=======
     return cp_parameters, mean_similarities, std_similarities
->>>>>>> Stashed changes
-
-    return cp_parameters[np.argmax(mean_similarities)] # best Cp parameter for this sequence length
 
 if __name__ == "__main__":
     length = 180
@@ -51,9 +31,6 @@ if __name__ == "__main__":
                    cp_parameters=[10**i for i in range(-3,4)],
                    runs_per_structure=1,
                    evaluations=evaluations)
-    # cp_experiments(target_structure_dict[length], cp_parameters=[1,10])
-<<<<<<< Updated upstream
-=======
     #improve plot: plot from 0.5 (random) to 1 and logarthmic scale on x acix.
     color = 'g'
     plt.plot(cp_parameters, mean_similarities, color = color)
@@ -68,4 +45,3 @@ if __name__ == "__main__":
     plt.savefig(f"cp_plot_{length}_{evaluations}.pdf")
     plt.show()
     
->>>>>>> Stashed changes
