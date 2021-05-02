@@ -11,7 +11,10 @@ def cp_experiments(structures, cp_parameters=[10**i for i in range(-3,4)], plot=
         similarities = np.empty(0)
         for structure, i in zip(structures, range(len(structures))):
             for j in range(1):
-                similarity = MonteCarloTreeSearch(structure, RNA = False, c_parameter = cp_parameter, max_evaluations=evaluations).run()[1]
+                similarity = MonteCarloTreeSearch(structure,
+                                                  RNA = False,
+                                                  c_parameter = cp_parameter,
+                                                  max_evaluations=evaluations).run()[1]
                 print(f'Cp = {cp_parameter}, i = {i}, j = {j}, sim = {similarity:.2f}')
                 similarities = np.append(similarities, similarity)
         mean_similarities = np.append(mean_similarities, np.mean(similarities))
