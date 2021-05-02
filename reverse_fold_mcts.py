@@ -1,7 +1,7 @@
+import warnings
 import numpy as np
 import random
 import os, subprocess
-import warnings
 
 
 """MONTE CARLO TREE SEARCH"""
@@ -58,6 +58,7 @@ class MonteCarloTreeSearch:
         self.root.visits += 1
         self.extend(self.root)
         self.structure_memory = {} #similarities as keys.
+        self.similarity_memory = []
 
     def run(self):
         "Runs MCTS, returns sequence, similarity, structure, number of function evaluations"
@@ -65,7 +66,7 @@ class MonteCarloTreeSearch:
             leaf = self.select(self.root, final=False)  # leaf = unvisited node
             similarity, sequence, predicted_structure = self.rollout(leaf)
             self.backpropagate(leaf, similarity)
-            if similarity > 1:
+            if similarity >= 1:
                 return sequence, similarity, predicted_structure, self.number_evaluations
         highest_similarity = max(list(self.structure_memory.keys()))
         self.rollout(self.select(self.root, final=True))
@@ -107,7 +108,7 @@ class MonteCarloTreeSearch:
                 node.add_child(position, nucleotide)
 
     def rollout(self, node):
-        sequence_dict_rollout = self.rollout_policy(node)
+        sequence_dict_rollout = self.rollout_policy(node.sequence_dict.copy())
         similarity, i_non_aligned_nucleotides, sequence,  predicted_structure = self.evaluate(sequence_dict_rollout)
 
         # evt. local search, maintaing  positions of that node. while similarity !=  1.
@@ -125,15 +126,15 @@ class MonteCarloTreeSearch:
         self.structure_memory.update({similarity:(sequence,  predicted_structure)})
         return similarity, sequence,  predicted_structure
 
-    def rollout_policy(self, node):
-        # do thesame as in extension, but than random and do not track the node.  #50% chance to turn order around
-        sequence_dict_rollout = node.sequence_dict.copy()
+    def rollout_policy(self, sequence_dict_rollout):
+        # do the same as in extension, but than random and do not track the node.  #50% chance to turn order around
+        #sequence_dict_rollout = node.sequence_dict.copy()
         while len(sequence_dict_rollout) < len(self.all_positions):
-            if len(node.sequence_dict.keys()) != 1:
+            if len(sequence_dict_rollout.keys()) != 1:
                 position = random.sample(self.all_positions - set(sequence_dict_rollout.keys()), 1)[0]
             else:
                 positions = self.all_positions.copy()
-                positions.remove(list(node.sequence_dict.keys())[0])
+                positions.remove(list(sequence_dict_rollout.keys())[0])
                 position = random.sample(positions, 1)[0]
             if type(position) == tuple:
                 base_pair = np.random.choice(a=list(self.base_pairs.keys()),
@@ -150,6 +151,7 @@ class MonteCarloTreeSearch:
         sequence = self.get_sequence(sequence_dict_rollout) # get sequence
         predicted_structure = self.call_RNAfold(sequence) # call RNAfold
         similarity, i_non_aligned_nucleotides = self.structure_similarity(predicted_structure)
+        self.similarity_memory.append(similarity)
         return similarity, i_non_aligned_nucleotides, sequence, predicted_structure # compare with target structure
 
     def backpropagate(self, node, similarity):
@@ -204,9 +206,6 @@ class MonteCarloTreeSearch:
                 ordered_sequence_dict.update({key:value})
         return "".join([value for (key, value) in sorted(ordered_sequence_dict.items())])
 
-    """Local search"""
-    # Mutations
-
 
     def mutate(self, sequence_dict_rollout, predicted_structure, i_non_aligned_nucleotides, sequence_dict_original={}):
         try:
@@ -244,9 +243,25 @@ class MonteCarloTreeSearch:
                 positions.add(i)
         return positions
 
+    def create_random_sequence(self):
+        for position in self.all_positions:
+          None
+
+    def run_local_search(self):
+        """Simple local search to compare with MCTS."""
+        sequence_dict, similarity, predicted_structure, i_non_aligned_nucleotides = self.rollout_policy({}), 0, None, self.all_positions
+        while self.resources_left():
+            new_sequence_dict, stop_local_search = self.mutate(sequence_dict, predicted_structure, i_non_aligned_nucleotides)
+            new_similarity, new_i_non_aligned_nucleotides, new_sequence, new_predicted_structure = self.evaluate(new_sequence_dict)
+            if new_similarity > similarity:
+                sequence_dict_rollout, similarity, i_non_aligned_nucleotides, sequence, predicted_structure = \
+                    new_sequence_dict, new_similarity, new_i_non_aligned_nucleotides, new_sequence, new_predicted_structure
+            if similarity >= 1:
+                break
+        return sequence, similarity, predicted_structure, self.number_evaluations
+
 if __name__ == "__main__":
-    warnings.filterwarnings("ignore")
     RNAfold_directory_myrthe = "C:\Program Files (x86)\ViennaRNA Package\RNAfold.exe"
     mcts_object = MonteCarloTreeSearch()
-    output = mcts_object.run()
+    output = mcts_object.run() # use .run_local_search if you want to run local search instead.
     print(output)
