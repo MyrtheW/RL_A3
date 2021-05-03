@@ -1,5 +1,5 @@
 # Reinforcement Learning Assignment 3
-Implementation of Monte Carlo Tree Search for the inverse RNA annd DNA folding problem. 
+Implementation of Monte Carlo Tree Search for the inverse RNA and DNA folding problem. 
 
 
 ## Table of contents
