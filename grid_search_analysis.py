@@ -22,11 +22,11 @@ for length in lengths:
     for evaluations, i in zip(max_evals, range(len(max_evals))):
         mean_similarities = grid[evaluations][length]['mean_sims']
         std_similarities = grid[evaluations][length]['std_sims']
-        
-        color = color_cycle[i]
-        ax.plot(cp_parameters, mean_similarities, color = color, label = evaluations)
         y_minus_error = mean_similarities - std_similarities
         y_plus_error = mean_similarities + std_similarities
+        color = color_cycle[i]
+        
+        ax.plot(cp_parameters, mean_similarities, color = color, label = evaluations)
         ax.fill_between(cp_parameters, y_minus_error, y_plus_error, color = color, alpha = 0.2)
     ax.set_xscale('log')
     ax.set_ylim(0.7, 1)
@@ -34,5 +34,5 @@ for length in lengths:
     ax.set_ylabel("Similarity")
     ax.set_title(f"Sequence length: {length}")
     ax.legend(loc = 'lower left')
-    # fig.savefig(f"cp_plot_{length}_{evaluations}.pdf")
+    # fig.savefig(f"plots/sim_vs_cp_{length}.pdf")
     fig.show()
