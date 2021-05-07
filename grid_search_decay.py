@@ -7,8 +7,8 @@ from target_structures import target_structure_dict
 
 grid = {}
 lengths = [100]
-cp_parameters = [10 ** i for i in range(-2, 1)]
-decay_factors = [10 ** i for i in range(-5, -2)]
+cp_parameters = [10 ** i for i in range(0, 4)]
+decay_factors = [0.1, 0.5, 0.99]
 
 for decay_factor in decay_factors:
     grid[decay_factor] = {}
