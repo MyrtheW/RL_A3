@@ -10,7 +10,7 @@ with open(pick_filename, "rb") as infile:
 
 lengths = [100]
 cp_parameters = [10 ** i for i in range(0, 4)]
-decay_factors = [0.1, 0.5, 0.99]
+decay_factors = [0.1, 0.5, 0.99, 0.9999]
 color_cycle = [
     "#1f77b4",
     "#ff7f0e",
