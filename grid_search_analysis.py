@@ -34,5 +34,5 @@ for length in lengths:
     ax.set_ylabel("Similarity")
     ax.set_title(f"Sequence length: {length}")
     ax.legend(loc = 'lower left')
-    fig.savefig(f"plots/sim_vs_cp_{length:03d}.pdf")
+    # fig.savefig(f"plots/sim_vs_cp_{length:03d}.pdf")
     # fig.show()
