@@ -6,9 +6,9 @@ import numpy as np
 from target_structures import target_structure_dict
 
 grid = {}
-lengths = [20, 60, 100, 140, 180]
-cp_parameters = [10 ** i for i in range(-3, 4)]
-decay_factors = [10 ** i for i in range(-6, -1)]
+lengths = [100]
+cp_parameters = [10 ** i for i in range(-2, 1)]
+decay_factors = [10 ** i for i in range(-5, -2)]
 
 for decay_factor in decay_factors:
     grid[decay_factor] = {}
